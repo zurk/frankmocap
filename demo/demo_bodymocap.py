@@ -97,7 +97,7 @@ def run_body_mocap(args, body_bbox_detector, body_mocap, visualizer):
             demo_utils.save_info_to_json(args, image_path, body_bbox_list, hand_bbox_list)
 
         if len(body_bbox_list) < 1: 
-            print(f"No body deteced: {image_path}")
+            print(f"No body detected: {image_path}")
             continue
 
         #Sort the bbox using bbox size 
