@@ -1,6 +1,8 @@
 *.swp
 *.jpg
 *.png
+.env/
+.idea/
 smpl/
 tmp/
 pretrained_models/
