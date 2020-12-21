@@ -2,6 +2,8 @@
 
 import os, sys, shutil
 import os.path as osp
+from pathlib import Path
+
 import cv2
 from collections import OrderedDict
 import mocap_utils.general_utils as gnu
@@ -295,6 +297,40 @@ def save_pred_to_pkl(
     gnu.make_subdir(pkl_path)
     gnu.save_pkl(pkl_path, saved_data)
     print(f"Prediction saved: {pkl_path}")
+
+
+def save_obj(vertices, faces, output_path):
+    output_path.parent.mkdir(exist_ok=True, parents=True)
+    with open(output_path, "w") as output:
+        for v in vertices:
+            output.write(f"v {v[0]} {v[1]} {v[2]}\n")
+        for f in faces:
+            output.write(f"f {f[0]} {f[1]} {f[2]}\n")
+
+
+def __save_camera(camera, output_path):
+    output_path.parent.mkdir(exist_ok=True, parents=True)
+    output_path.write_text(f"{camera[0]} {camera[1]} {camera[2]}\n")
+
+
+def save_pred_to_obj(args, demo_type, image_path, pred_mesh_list):
+    smpl_type = 'smplx' if args.use_smplx else 'smpl'
+    assert demo_type in ['hand', 'body', 'frank']
+    if demo_type in ['hand', 'frank']:
+        assert smpl_type == 'smplx'
+
+    assert args.single_person, "Only --single_person is supported now."
+
+    obj_path = Path(args.out_dir) / 'obj' / f"{Path(image_path).stem}.obj"
+    save_obj(pred_mesh_list[0]["vertices"], pred_mesh_list[0]["faces"], obj_path)
+    print(f"Prediction saved: {str(obj_path)}")
+
+
+def save_camera_info(args, image_path, pred_output_list):
+    assert args.single_person, "Only --single_person is supported now."
+    camera_path = Path(args.out_dir) / 'camera' / f"{Path(image_path).stem}.txt"
+    __save_camera(pred_output_list[0]["pred_camera"], camera_path)
+    print(f"Camera saved: {str(camera_path)}")
  
 
 def save_res_img(out_dir, image_path, res_img):

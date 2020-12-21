@@ -140,6 +140,15 @@ def run_body_mocap(args, body_bbox_detector, body_mocap, visualizer):
             demo_utils.save_pred_to_pkl(
                 args, demo_type, image_path, body_bbox_list, hand_bbox_list, pred_output_list)
 
+        if args.save_obj:
+            demo_type = 'body'
+            demo_utils.save_pred_to_obj(
+                args, demo_type, image_path, pred_mesh_list)
+
+        if args.save_camera:
+            demo_utils.save_camera_info(args, image_path, pred_output_list)
+
+
         timer.toc(bPrint=True,title="Time")
         print(f"Processed : {image_path}")
 
