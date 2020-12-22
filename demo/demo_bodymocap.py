@@ -105,12 +105,10 @@ def run_body_mocap(args, body_bbox_detector, body_mocap, visualizer):
         bbox_size =  [ (x[2] * x[3]) for x in body_bbox_list]
         idx_big2small = np.argsort(bbox_size)[::-1]
         body_bbox_list = [ body_bbox_list[i] for i in idx_big2small ]
-        body_pose_list = [ body_pose_list[i] for i in idx_big2small ]
         hand_bbox_list = [ hand_bbox_list[i] for i in idx_big2small ]
         if args.single_person and len(body_bbox_list)>0:
             body_bbox_list = [body_bbox_list[0], ]
             hand_bbox_list = [hand_bbox_list[0], ]
-            body_pose_list = [body_pose_list[0], ]
 
         # Body Pose Regression
         pred_output_list = body_mocap.regress(img_original_bgr, body_bbox_list)

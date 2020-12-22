@@ -20,6 +20,7 @@ pretrained/
 render_result/
 lightweight-human-pose-estimation.pytorch/
 data/*
+output/
 webvideos/
 samples/
 *.pth
